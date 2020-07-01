@@ -17,12 +17,22 @@ export const shoppingCartReducer = (
 ): IShoppingCartState => {
   switch (action.type) {
     case ADD_TO_CART:
+      const newCartItems = [...state.items];
+      const existingItem = newCartItems.find(
+        (item) => item.product.itemNr === action.product.itemNr
+      );
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        newCartItems.push({
+          key: uuidv4(),
+          product: action.product,
+          quantity: 1,
+        });
+      }
       return {
         ...state,
-        items: [
-          ...state.items,
-          { key: uuidv4(), product: action.payload, quantity: 1 },
-        ],
+        items: newCartItems,
       };
     case REMOVE_FROM_CART:
       return {

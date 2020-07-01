@@ -1,16 +1,16 @@
 import {
   IAddToCartAction,
   ADD_TO_CART,
-  IProduct,
   IRemoveFromCartAction,
   REMOVE_FROM_CART,
   IChangeQuantityAction,
   CHANGE_QUANTITY,
 } from "./types";
+import { IProduct } from "../product-catalog/types";
 
 export const addToCart = (product: IProduct): IAddToCartAction => ({
   type: ADD_TO_CART,
-  payload: product,
+  product,
 });
 
 export const removeFromCart = (key: string): IRemoveFromCartAction => ({

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Button,
   Table,
   TableRow,
   TableCell,
@@ -30,58 +29,52 @@ interface IProps {
   changeQuantity: typeof changeQuantity;
 }
 
-const ShoppingCart: React.FC<IProps> = (props) => {
+const Component: React.FC<IProps> = (props) => {
+  const onQuantityChanged = (carItemKey: string, value: string) => {
+    const quantity = parseInt(value);
+    if (quantity > 0) {
+      props.changeQuantity(carItemKey, quantity);
+    }
+  };
+
   return (
-    <>
-      <Button
-        variant="contained"
-        onClick={() => {
-          props.addToCart({ itemNr: 1, name: "Product 1", price: 2.5 });
-        }}
-      >
-        Add
-      </Button>
-      <TableContainer>
-        <Table>
-          <TableBody>
-            {props.shoppingCart.items.map((cartItem) => (
-              <TableRow key={cartItem.key}>
-                <TableCell>
-                  <IconButton
-                    onClick={() => {
-                      props.removeFromCart(cartItem.key);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-                <TableCell>{cartItem.product.name}</TableCell>
-                <TableCell>
-                  <TextField
-                    type="number"
-                    value={cartItem.quantity}
-                    onChange={(value) =>
-                      props.changeQuantity(
-                        cartItem.key,
-                        parseInt(value.target.value)
-                      )
-                    }
-                  />
-                </TableCell>
-                <TableCell>
-                  {cartItem.product.price * cartItem.quantity}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+    <TableContainer>
+      <Table>
+        <TableBody>
+          {props.shoppingCart.items.map((cartItem) => (
+            <TableRow key={cartItem.key}>
+              <TableCell>
+                <IconButton
+                  onClick={() => {
+                    props.removeFromCart(cartItem.key);
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
+              <TableCell>{cartItem.product.name}</TableCell>
+              <TableCell>
+                <TextField
+                  type="number"
+                  value={cartItem.quantity}
+                  onChange={(value) => {
+                    onQuantityChanged(cartItem.key, value.target.value);
+                  }}
+                />
+              </TableCell>
+              <TableCell align="right">
+                {cartItem.product.price * cartItem.quantity} kr.
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
-export default connect(mapStateToProps, {
+export const ShoppingCart = connect(mapStateToProps, {
   addToCart,
   removeFromCart,
   changeQuantity,
-})(ShoppingCart);
+})(Component);
