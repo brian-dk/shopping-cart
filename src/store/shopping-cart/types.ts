@@ -18,6 +18,7 @@ export interface IShoppingCartState {
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
+export const CHANGE_QUANTITY = "CHANGE_QUANTITY";
 
 export interface IAddToCartAction extends Action<typeof ADD_TO_CART> {
   payload: IProduct;
@@ -27,4 +28,12 @@ export interface IRemoveFromCartAction extends Action<typeof REMOVE_FROM_CART> {
   key: string;
 }
 
-export type ShoppingCartActions = IAddToCartAction | IRemoveFromCartAction;
+export interface IChangeQuantityAction extends Action<typeof CHANGE_QUANTITY> {
+  key: string;
+  quantity: number;
+}
+
+export type ShoppingCartActions =
+  | IAddToCartAction
+  | IRemoveFromCartAction
+  | IChangeQuantityAction;

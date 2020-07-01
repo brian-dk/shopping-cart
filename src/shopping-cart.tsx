@@ -7,10 +7,15 @@ import {
   TableBody,
   TableContainer,
   IconButton,
+  TextField,
 } from "@material-ui/core";
 import { ApplicationState } from "./store";
 import { connect } from "react-redux";
-import { removeFromCart, addToCart } from "./store/shopping-cart/actions";
+import {
+  removeFromCart,
+  addToCart,
+  changeQuantity,
+} from "./store/shopping-cart/actions";
 import { IShoppingCartState } from "./store/shopping-cart/types";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -22,6 +27,7 @@ interface IProps {
   shoppingCart: IShoppingCartState;
   addToCart: typeof addToCart;
   removeFromCart: typeof removeFromCart;
+  changeQuantity: typeof changeQuantity;
 }
 
 const ShoppingCart: React.FC<IProps> = (props) => {
@@ -50,7 +56,18 @@ const ShoppingCart: React.FC<IProps> = (props) => {
                   </IconButton>
                 </TableCell>
                 <TableCell>{cartItem.product.name}</TableCell>
-                <TableCell>{cartItem.quantity}</TableCell>
+                <TableCell>
+                  <TextField
+                    type="number"
+                    value={cartItem.quantity}
+                    onChange={(value) =>
+                      props.changeQuantity(
+                        cartItem.key,
+                        parseInt(value.target.value)
+                      )
+                    }
+                  />
+                </TableCell>
                 <TableCell>
                   {cartItem.product.price * cartItem.quantity}
                 </TableCell>
@@ -63,6 +80,8 @@ const ShoppingCart: React.FC<IProps> = (props) => {
   );
 };
 
-export default connect(mapStateToProps, { addToCart, removeFromCart })(
-  ShoppingCart
-);
+export default connect(mapStateToProps, {
+  addToCart,
+  removeFromCart,
+  changeQuantity,
+})(ShoppingCart);

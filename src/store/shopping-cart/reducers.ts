@@ -3,6 +3,7 @@ import {
   ShoppingCartActions,
   ADD_TO_CART,
   REMOVE_FROM_CART,
+  CHANGE_QUANTITY,
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -27,6 +28,14 @@ export const shoppingCartReducer = (
       return {
         ...state,
         items: state.items.filter((value) => value.key !== action.key),
+      };
+    case CHANGE_QUANTITY:
+      const newItems = [...state.items];
+      const item = newItems.find((item) => item.key === action.key);
+      if (item) item.quantity = action.quantity;
+      return {
+        ...state,
+        items: newItems,
       };
     default:
       return state;
