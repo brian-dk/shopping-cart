@@ -63,7 +63,7 @@ const Component: React.FC<IProps> = (props) => {
                 />
               </TableCell>
               <TableCell align="right">
-                {cartItem.product.price * cartItem.quantity} kr.
+                {(cartItem.product.price * cartItem.quantity).toFixed(2)} kr.
               </TableCell>
             </TableRow>
           ))}
